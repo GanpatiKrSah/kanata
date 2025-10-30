@@ -1,0 +1,53 @@
+;; Step 1: Define the QWERTY layout as base
+(defsrc 
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rctl
+)
+
+;; Step 2: This must be the layout of your custom keyboard
+(deflayer custom
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    (one-shot-press 2000 (layer-while-held superkey))    bspc    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rctl
+)
+
+
+;; Step 4: Define the superkey layer ensuring all keys are accounted for
+(deflayer superkey
+  grv  1    2    3    4    5    6    7    8    9    0    XX    XX    bspc
+  tab  @not    @lb    @rb    @col    /    XX    @mul    @dq    '    XX   XX    XX  XX
+  caps @pipe   @lp  @rp    .   ;   @hash   =    @per    tab    XX    XX    ret
+  lsft @and   [    ]    +    XX    -    @under    XX   XX   XX   rsft
+  lctl lmet lalt           ret            ralt rctl
+)
+
+;; Step 2: Define aliases for special characters using Unicode and quoting
+(defalias
+  dq (unicode r#"""#)       ;; Double quote "
+  lp (unicode "(")          ;; Left parenthesis (
+  rp (unicode ")")          ;; Right parenthesis )
+  lb (unicode "{")          ;; Left brace {
+  rb (unicode "}")          ;; Right brace }
+  and (unicode "&")
+  hash (unicode "#")
+  pipe (unicode "|")
+  not (unicode "!")
+  qst (unicode "?")
+  col (unicode ":")
+  per (unicode "%")
+  mul (unicode "*")
+  under (unicode "_")
+)
+
+
+(defcfg
+  process-unmapped-keys   yes
+  concurrent-tap-hold     yes
+  allow-hardware-repeat   no
+  override-release-on-activation yes
+)
